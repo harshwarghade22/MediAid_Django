@@ -60,12 +60,12 @@ const Navbar = () => {
           </Link> */}
 
           <h1>Hey {userInfo?.name} !!</h1>
-          {/* <button
+          <button
             onClick={handleLogout}
             className="bg-red-500 text-white px-6 py-2 rounded-full hover:bg-red-600 transition-all duration-300"
           >
             Logout
-          </button> */}
+          </button>
         </div>
       );
     }
