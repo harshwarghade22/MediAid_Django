@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import EmergencyModal from './EmergencyModal'
-// import { fetchDoctors, filterDoctors } from '../actions/doctorActions';
+import { listDoctors } from '../../actions/doctorActions';
 import {
   FaSearch,
   FaStethoscope,
@@ -30,8 +30,7 @@ const DoctorsList = () => {
   const {
     doctors,
     loading,
-    error,
-    filters
+    error
   } = useSelector((state) => state.doctorList);
 
   // Local state
@@ -52,13 +51,17 @@ const DoctorsList = () => {
 
   // Fetch doctors on component mount
   useEffect(() => {
-    dispatch(fetchDoctors());
+    dispatch(listDoctors());
   }, [dispatch]);
 
-  // Update filters
-  useEffect(() => {
-    dispatch(filterDoctors({ searchTerm, specialty, rating }));
-  }, [searchTerm, specialty, rating, dispatch]);
+  // Filter doctors
+  const filteredDoctors = doctors.filter(doctor =>
+    doctor.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
+    (specialty === '' || doctor.specialty === specialty) &&
+    doctor.rating >= rating
+  );
+
+  const infiniteDoctors = [...filteredDoctors, ...filteredDoctors];
 
   // Scroll animation
   useEffect(() => {
@@ -94,80 +97,6 @@ const DoctorsList = () => {
       scrollContainer.removeEventListener('mouseleave', handleMouseLeave);
     };
   }, []);
-
-  // Filter doctors
-  const filteredDoctors = doctors.filter(doctor =>
-    doctor.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
-    (specialty === '' || doctor.specialty === specialty) &&
-    doctor.rating >= rating
-  );
-
-  const infiniteDoctors = [...filteredDoctors, ...filteredDoctors];
-
-  // Emergency Modal Component
-  // const EmergencyModal = ({ onClose }) => {
-  //   const handleOptionSelect = (option) => {
-  //     // Handle emergency option selection
-  //     console.log(`Selected option: ${option}`);
-  //     onClose();
-  //   };
-
-  //   return (
-  //     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-  //       <div className="bg-white rounded-lg w-full max-w-md shadow-2xl p-8 relative">
-  //         <button
-  //           onClick={onClose}
-  //           className="absolute top-4 right-4 text-gray-500 hover:text-red-500"
-  //         >
-  //           <FaTimes className="h-6 w-6" />
-  //         </button>
-
-  //         <div className="text-center">
-  //           <FaHeartbeat className="mx-auto h-12 w-12 text-red-500 mb-4" />
-  //           <h2 className="text-2xl font-bold mb-4 text-gray-800">
-  //             Emergency Assistance
-  //           </h2>
-  //           <p className="text-gray-600 mb-6">
-  //             Choose your preferred method of communication
-  //           </p>
-
-  //           <div className="grid grid-cols-2 gap-4">
-  //             <button
-  //               onClick={() => handleOptionSelect('chat')}
-  //               className="border-2 border-blue-500 rounded-lg p-6 hover:bg-blue-50 transition-colors group"
-  //             >
-  //               <FaComments className="mx-auto h-10 w-10 text-blue-500 mb-3 group-hover:scale-110 transition-transform" />
-  //               <h3 className="font-semibold text-blue-600">Text Chat</h3>
-  //               <p className="text-xs text-gray-500 mt-2">
-  //                 Instant messaging with medical professional
-  //               </p>
-  //             </button>
-
-  //             <button
-  //               onClick={() => handleOptionSelect('video')}
-  //               className="border-2 border-green-500 rounded-lg p-6 hover:bg-green-50 transition-colors group"
-  //             >
-  //               <FaVideo className="mx-auto h-10 w-10 text-green-500 mb-3 group-hover:scale-110 transition-transform" />
-  //               <h3 className="font-semibold text-green-600">Video Consultation</h3>
-  //               <p className="text-xs text-gray-500 mt-2">
-  //                 Live video call with a doctor
-  //               </p>
-  //             </button>
-  //           </div>
-
-  //           <div className="mt-6 bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-  //             <p className="text-sm text-yellow-700">
-  //               ⚠️ Our medical professionals are standing by to assist you
-  //             </p>
-  //           </div>
-  //         </div>
-  //       </div>
-  //     </div>
-  //   );
-  // };
-
-  // if (loading) return <LoadingSpinner />;
-  // if (error) return <ErrorAlert message={error} />;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 p-8">

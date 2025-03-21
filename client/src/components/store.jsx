@@ -3,11 +3,14 @@ import { thunk } from "redux-thunk";
 import { composeWithDevTools } from "@redux-devtools/extension";
 // import { authReducer, doctorReducer } from "../reducers/projectReducer";
 import { signupProjectReducers ,  loginProjectReducers, userDetailReducers } from "../reducers/projectReducer";
+import { doctorListReducer, doctorDetailsReducer } from "../reducers/doctorReducer";
 
 const rootReducer = combineReducers({
   userSignup: signupProjectReducers,
   userLogin:loginProjectReducers,
-  userDetails: userDetailReducers
+  userDetails: userDetailReducers,
+  doctorList: doctorListReducer,
+  doctorDetails: doctorDetailsReducer
 });
 
 const middleware = [thunk];

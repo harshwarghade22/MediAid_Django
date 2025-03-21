@@ -23,7 +23,7 @@ import axios from 'axios';
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
-  const { isAuthenticated, loading } = useSelector((state) => state.auth);
+  const { isAuthenticated, loading } = useSelector((state) => state.userLogin);
   const location = useLocation();
 
   // Show loading or redirect to login
