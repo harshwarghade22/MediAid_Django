@@ -49,7 +49,7 @@ const VideoChatPage = () => {
   useEffect(() => {
     const fetchDoctorDetails = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/doctors/${id}`);
+        const response = await fetch(`http://127.0.0.1:8000/api/doctors/${id}/`);
         const data = await response.json();
         console.log('Doctor Details:', data);
         setDoctor(data);

@@ -192,7 +192,7 @@ const DoctorsList = () => {
 
 
                   <div className="flex space-x-3">
-                    <Link to={`/appointmentBooking/${doctor._id}`} className="flex-1 bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition-colors flex items-center justify-center text-sm">
+                    <Link to={`/appointmentBooking/${doctor.id}`} className="flex-1 bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition-colors flex items-center justify-center text-sm">
                       <FaCalendarCheck className="mr-2" /> Appointment
                     </Link>
                     {/* <Link
@@ -205,7 +205,7 @@ const DoctorsList = () => {
 
                     <Link
                       className="flex-1 bg-red-500 text-white py-2 rounded-lg hover:bg-red-600 transition-colors animate-pulse flex items-center justify-center text-sm"
-                      to={`/emergencyContact/${doctor._id}`}
+                      to={`/emergencyContact/${doctor.id}`}
                       state={{ doctor }}
                     >
                       <FaHeartbeat className="mr-2" /> Emergency
