@@ -20,7 +20,7 @@ import {
 import { Link } from 'react-router-dom';
 // import LoadingSpinner from '../components/LoadingSpinner';
 // import ErrorAlert from '../components/ErrorAlert';
-import { fetchDoctors, filterDoctors } from '../../actions/projectAction';
+// import { fetchDoctors, filterDoctors } from '../../actions/projectAction';
 
 const DoctorsList = () => {
   const dispatch = useDispatch();

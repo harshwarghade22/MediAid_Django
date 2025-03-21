@@ -1,109 +1,75 @@
-import { CLEAR_ERRORS, FETCH_DOCTORS_FAIL, FETCH_DOCTORS_REQUEST, FETCH_DOCTORS_SUCCESS, FILTER_DOCTORS, LOGIN_FAIL, LOGIN_REQUEST, LOGIN_SUCCESS, LOGOUT, REGISTER_FAIL, REGISTER_REQUEST, REGISTER_SUCCESS } from "../constants/projectConstant";
-
-// Initialize auth state based on token presence
-// But DON'T immediately assume authenticated just because token exists
-const token = localStorage.getItem('token');
+import { GET_USERDETAIL_FAIL, GET_USERDETAIL_REQUEST, GET_USERDETAIL_SUCCESS, LOGIN_PROJECT_FAIL, LOGIN_PROJECT_REQUEST, LOGIN_PROJECT_SUCCESS, LOGOUT_PROJECT, SIGNUP_PROJECT_FAIL, SIGNUP_PROJECT_REQUEST, SIGNUP_PROJECT_SUCCESS } from "../constants/projectConstant";
 
 const initialState = {
-    user: null,
-    loading: token ? true : false, // Start loading if token exists, to validate it
-    isAuthenticated: false, // Don't assume authenticated until token validated with server
-    error: null,
+  loading: false,
+  userInfo: null,
+  error: null,
+};
+    
+export const signupProjectReducers = (state = initialState, action) => {
+switch (action.type) {
+  case SIGNUP_PROJECT_REQUEST:
+  return {
+      ...state,
+      loading: true,
   };
-  
-  export const authReducer = (state = initialState, action) => {
-    switch (action.type) {
-      case REGISTER_REQUEST:
-      case LOGIN_REQUEST:
-        return {
-          ...state,
-          loading: true,
-          error: null
-        };
-  
-      case REGISTER_SUCCESS:
-      case LOGIN_SUCCESS:
-        return {
-          ...state,
-          loading: false,
-          isAuthenticated: true,
-          user: action.payload,
-          error: null,
-        };
-  
-      case REGISTER_FAIL:
-      case LOGIN_FAIL:
-        return {
-          ...state,
-          loading: false,
-          isAuthenticated: false,
-          user: null,
-          error: action.payload,
-        };
-  
-      case LOGOUT:
-        // Clear localStorage token on logout
-        localStorage.removeItem('token');
-        return {
-          ...state,
-          loading: false,
-          isAuthenticated: false,
-          user: null,
-          error: null
-        };
-  
-      case CLEAR_ERRORS:
-        return {
-          ...state,
-          error: null,
-        };
-  
-      default:
-        return state;
-    }
+  case SIGNUP_PROJECT_SUCCESS:
+  return {
+      ...state,
+      loading: false,
+      userInfo: action.payload,
   };
+  case SIGNUP_PROJECT_FAIL:
+  return {
+      ...state,
+      loading: false,
+      error: action.payload,
+  };
+  default:
+  return state;
+}
+};
 
-  
-  
-  const initialState2 = {
-    doctors: [],
-    loading: false,
-    error: null,
-    filters: {
-      searchTerm: '',
-      specialty: '',
-      rating: 0,
-    },
-  };
-  
-  export const doctorReducer = (state = initialState2, action) => {
-    switch (action.type) {
-      case FETCH_DOCTORS_REQUEST:
-        return {
-          ...state,
-          loading: true,
-        };
-      case FETCH_DOCTORS_SUCCESS:
-        return {
-          ...state,
-          loading: false,
-          doctors: action.payload,
-        };
-      case FETCH_DOCTORS_FAIL:
-        return {
-          ...state,
-          loading: false,
-          error: action.payload,
-        };
-      case FILTER_DOCTORS:
-        return {
-          ...state,
-          filters: {
-            ...state.filters,
-            ...action.payload,
-          },
-        };
+const initialState2 = {
+  loading: false,
+  userInfo: null,
+  error: null,
+};
+
+export const loginProjectReducers = (state = initialState2, action) => {
+  switch (action.type) {
+    case LOGIN_PROJECT_REQUEST:
+      return { loading: true , isAuthenticated: false};
+    case LOGIN_PROJECT_SUCCESS:
+      return { loading: false,isAuthenticated: true, userInfo: action.payload };
+    case LOGIN_PROJECT_FAIL:
+      return { loading: false, isAuthenticated: false, error: action.payload };
+    case LOGOUT_PROJECT:
+      return {};
+    default:
+      return state;
+  }
+};
+
+
+export const userDetailReducers = (state = {}, action) =>{
+  switch(action.type){
+      case GET_USERDETAIL_REQUEST:
+          return {
+              loading: true
+          }
+      case GET_USERDETAIL_SUCCESS:
+          return {
+              loading: false,
+              user: action.payload
+          }
+      case GET_USERDETAIL_FAIL:
+          return {
+              loading: false,
+              error: action.payload
+          }
       default:
-        return state;
-    }
-  };
+          return state
+  }
+}
+

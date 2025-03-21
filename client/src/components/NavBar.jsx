@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { FaUserMd, FaBars, FaTimes, FaHeartbeat, FaUserCircle } from 'react-icons/fa';
 import { useSelector, useDispatch } from 'react-redux';
-import { logout } from '../actions/projectAction';
+import { getUserDetails, logoutProject } from '../actions/projectAction';
+// import { logoutProject } from '../reducers/projectReducer';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -11,7 +12,27 @@ const Navbar = () => {
   const dispatch = useDispatch();
   
   // Get authentication state from Redux
-  const { isAuthenticated, user } = useSelector(state => state.auth);
+  const { isAuthenticated, user } = useSelector(state => state.userLogin);
+  console.log(user)
+
+  const userDetails = useSelector((state) => state.userDetails);
+  const { userInfo } = userDetails;
+  
+
+  useEffect(() => {
+    if (user) {
+        try {
+            const token = user.access;
+            const base64Url = token.split('.')[1];
+            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            const decodedPayload = JSON.parse(atob(base64));
+            const userId = decodedPayload.user_id;
+            dispatch(getUserDetails(user.access, userId));
+        } catch (error) {
+            console.error("Error decoding token:", error);
+        }
+    }
+}, [dispatch, user]);
 
   React.useEffect(() => {
     const handleScroll = () => {
@@ -22,7 +43,7 @@ const Navbar = () => {
   }, []);
 
   const handleLogout = () => {
-    dispatch(logout());
+    dispatch(logoutProject());
     navigate('/');
   };
 
@@ -30,19 +51,21 @@ const Navbar = () => {
     if (isAuthenticated) {
       return (
         <div className="flex items-center space-x-4">
-          <Link 
+          {/* <Link 
             to="/profile"
             className="flex items-center space-x-2 text-blue-600 hover:text-blue-700 transition"
           >
             <FaUserCircle className="h-5 w-5" />
             <span className="font-medium">{user?.fullName || 'Profile'}</span>
-          </Link>
-          <button
+          </Link> */}
+
+          <h1>Heee {userInfo?.name}</h1>
+          {/* <button
             onClick={handleLogout}
             className="bg-red-500 text-white px-6 py-2 rounded-full hover:bg-red-600 transition-all duration-300"
           >
             Logout
-          </button>
+          </button> */}
         </div>
       );
     }

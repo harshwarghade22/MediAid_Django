@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { FaUser, FaEnvelope, FaPhone, FaUserMd, FaEdit, FaKey, FaSignOutAlt } from 'react-icons/fa';
-import { logout } from '../../actions/projectAction';
+import { logoutProject } from '../../actions/projectAction';
 
 const Profile = () => {
   const { user } = useSelector((state) => state.auth);
@@ -14,7 +14,7 @@ const Profile = () => {
   });
 
   const handleLogout = () => {
-    dispatch(logout());
+    dispatch(logoutProject());
   };
 
   const handleChange = (e) => {

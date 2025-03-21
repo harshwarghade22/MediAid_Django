@@ -1,219 +1,93 @@
-// import axios from 'axios';
-// import { CLEAR_ERRORS, LOGIN_FAIL, LOGIN_REQUEST, LOGIN_SUCCESS, LOGOUT, REGISTER_FAIL, REGISTER_REQUEST, REGISTER_SUCCESS } from "../constants/projectConstant";
-
-// // Register user
-// export const register = (userData) => async (dispatch) => {
-//   try {
-//     dispatch({ type: REGISTER_REQUEST });
-
-//     const config = {
-//       headers: {
-//         'Content-Type': 'application/json',
-//       },
-//     };
-
-//     // Replace with your API endpoint
-//     const { data } = await axios.post(
-//       'http://localhost:5000/api/auth/register',
-//       userData,
-//       config
-//     );
-
-//     dispatch({
-//       type: REGISTER_SUCCESS,
-//       payload: data.user,
-//     });
-
-//     localStorage.setItem('token', data.token);
-//   } catch (error) {
-//     dispatch({
-//       type: REGISTER_FAIL,
-//       payload: error.response.data.message,
-//     });
-//   }
-// };
-
-// // Login user
-// export const login = (email, password) => async (dispatch) => {
-//   try {
-//     dispatch({ type: LOGIN_REQUEST });
-
-//     const config = {
-//       headers: {
-//         'Content-Type': 'application/json',
-//       },
-//     };
-
-//     // Replace with your API endpoint
-//     const { data } = await axios.post(
-//       'http://localhost:5000/api/auth/login',
-//       { email, password },
-//       config
-//     );
-
-//     dispatch({
-//       type: LOGIN_SUCCESS,
-//       payload: data.user,
-//     });
-
-//     localStorage.setItem('token', data.token);
-//   } catch (error) {
-//     dispatch({
-//       type: LOGIN_FAIL,
-//       payload: error.response.data.message,
-//     });
-//   }
-// };
-
-// // Logout user
-// export const logout = () => async (dispatch) => {
-//   localStorage.removeItem('token');
-//   dispatch({ type: LOGOUT });
-// };
-
-// // Clear Errors
-// export const clearErrors = () => async (dispatch) => {
-//   dispatch({ type: CLEAR_ERRORS });
-// };
-
 import axios from "axios";
-import {
-  CLEAR_ERRORS,
-  FETCH_DOCTORS_FAIL,
-  FETCH_DOCTORS_REQUEST,
-  FETCH_DOCTORS_SUCCESS,
-  FILTER_DOCTORS,
-  LOGIN_FAIL,
-  LOGIN_REQUEST,
-  LOGIN_SUCCESS,
-  LOGOUT,
-  REGISTER_FAIL,
-  REGISTER_REQUEST,
-  REGISTER_SUCCESS,
-} from "../constants/projectConstant";
-
-const API_URL = "http://localhost:5000/api/auth"; // Base API URL
-
-// Register user
-export const register = (userData) => async (dispatch) => {
+import { GET_USERDETAIL_FAIL, GET_USERDETAIL_REQUEST, GET_USERDETAIL_SUCCESS, LOGIN_PROJECT_FAIL, LOGIN_PROJECT_REQUEST, LOGIN_PROJECT_SUCCESS, LOGOUT_PROJECT, SIGNUP_PROJECT_FAIL, SIGNUP_PROJECT_REQUEST, SIGNUP_PROJECT_SUCCESS } from "../constants/projectConstant";
+export const signup = (name, email, password, password2) => async (dispatch) => {
   try {
-    dispatch({ type: REGISTER_REQUEST });
-    console.log("Sending registration data:", userData);
+      dispatch({ type: SIGNUP_PROJECT_REQUEST });
 
-    const { data } = await axios.post(`${API_URL}/register`, userData, {
+      const config = {
+          headers: {
+              'Content-Type': 'application/json'
+          }
+      };
+
+      const { data } = await axios.post('http://127.0.0.1:8000/user/signup/', { name, email, password, password2 }, config);
+
+      dispatch({
+          type: SIGNUP_PROJECT_SUCCESS,
+          payload: data
+      });
+
+      // You may also want to save user info in local storage
+      localStorage.setItem('userInfo', JSON.stringify(data));
+  } catch (error) {
+      dispatch({
+          type: SIGNUP_PROJECT_FAIL,
+          payload: error.response && error.response.data.message
+              ? error.response.data.message
+              : error.message,
+      });
+  }
+};
+
+export const logoutProject = () => (dispatch) => {
+  localStorage.removeItem("userInfo");
+  dispatch({ type: LOGOUT_PROJECT });
+};
+
+
+export const loginProject = (email, password) => async (dispatch) => {
+  try {
+    dispatch({ type: LOGIN_PROJECT_REQUEST });
+
+    const config = {
       headers: {
         "Content-Type": "application/json",
       },
-    });
-
-    dispatch({ type: REGISTER_SUCCESS, payload: data.user });
-    
-    if (data.token) {
-      localStorage.setItem("token", data.token);
-    }
-    
-    return data;
-  } catch (error) {
-    console.error("Registration error:", error.response?.data || error);
-    
-    dispatch({
-      type: REGISTER_FAIL,
-      payload: error.response?.data?.message || "Registration failed",
-    });
-    
-    throw error;
-  }
-};
-
-// Login user
-export const login = (email, password) => async (dispatch) => {
-  try {
-    dispatch({ type: LOGIN_REQUEST });
-    
-    console.log("Login attempt with email:", email);
+    };
 
     const { data } = await axios.post(
-      `${API_URL}/login`,
+      "http://127.0.0.1:8000/api/token/",
       { email, password },
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
+      config
     );
 
-    console.log("Login successful, user data received");
-
-    // Set token in localStorage for future authenticated requests
-    localStorage.setItem("token", data.token);
-    
-    // Set Authorization header for future requests
-    axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
-
-    // Dispatch success action with user data
     dispatch({
-      type: LOGIN_SUCCESS,
-      payload: data.user
-    });
-    
-    return data;
-  } catch (error) {
-    console.error("Login error:", error.response?.data || error);
-    
-    dispatch({
-      type: LOGIN_FAIL,
-      payload: error.response?.data?.message || "Login failed. Check your credentials."
-    });
-  }
-};
-
-// Logout user
-export const logout = () => async (dispatch) => {
-  try {
-    // Optional: Call logout API if you want to invalidate tokens on server
-    await axios.get(`${API_URL}/logout`);
-    
-    localStorage.removeItem("token");
-    dispatch({ type: LOGOUT });
-  } catch (error) {
-    console.error("Logout failed", error);
-    // Still remove token from localStorage even if server logout fails
-    localStorage.removeItem("token");
-    dispatch({ type: LOGOUT });
-  }
-};
-
-// Clear Errors
-export const clearErrors = () => async (dispatch) => {
-  dispatch({ type: CLEAR_ERRORS });
-};
-
-
-
-
-// Action to fetch all doctors
-export const fetchDoctors = () => async (dispatch) => {
-  try {
-    dispatch({ type: FETCH_DOCTORS_REQUEST });
-
-    const { data } = await axios.get('http://localhost:5000/api/doctors/all');
-
-    dispatch({
-      type: FETCH_DOCTORS_SUCCESS,
+      type: LOGIN_PROJECT_SUCCESS,
       payload: data,
     });
+
+    localStorage.setItem("userInfo", JSON.stringify(data));
   } catch (error) {
     dispatch({
-      type: FETCH_DOCTORS_FAIL,
-      payload: error.response && error.response.data.message
-        ? error.response.data.message
-        : error.message,
+      type: LOGIN_PROJECT_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
     });
   }
 };
 
-// Action to filter doctors
-export const filterDoctors = (filters) => ({
-  type: FILTER_DOCTORS,
-  payload: filters,
-});
+export const getUserDetails = (token,userId) => async (dispatch) => {
+  try {
+    dispatch({ type: GET_USERDETAIL_REQUEST });
+      const config = {
+          headers: {
+              Authorization: `Bearer ${token}`,
+          },
+      };
+      const { data } = await axios.get(`http://127.0.0.1:8000/user/${userId}/`, config); // Adjust the endpoint accordingly
+
+      dispatch({
+          type: GET_USERDETAIL_SUCCESS,
+          payload: data,
+      });
+  } catch (error) {
+      dispatch({
+          type: GET_USERDETAIL_FAIL,
+          payload: error.response && error.response.data.message
+              ? error.response.data.message
+              : error.message,
+      });
+  }
+};
