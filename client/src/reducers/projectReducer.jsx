@@ -41,7 +41,7 @@ export const loginProjectReducers = (state = initialState2, action) => {
     case LOGIN_PROJECT_REQUEST:
       return { loading: true , isAuthenticated: false};
     case LOGIN_PROJECT_SUCCESS:
-      return { loading: false,isAuthenticated: true, userInfo: action.payload };
+      return { loading: false,isAuthenticated: true, user: action.payload };
     case LOGIN_PROJECT_FAIL:
       return { loading: false, isAuthenticated: false, error: action.payload };
     case LOGOUT_PROJECT:
@@ -61,7 +61,7 @@ export const userDetailReducers = (state = {}, action) =>{
       case GET_USERDETAIL_SUCCESS:
           return {
               loading: false,
-              user: action.payload
+              userInfo: action.payload
           }
       case GET_USERDETAIL_FAIL:
           return {

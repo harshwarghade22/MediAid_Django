@@ -59,7 +59,7 @@ const Navbar = () => {
             <span className="font-medium">{user?.fullName || 'Profile'}</span>
           </Link> */}
 
-          <h1>Heee {userInfo?.name}</h1>
+          <h1>Hey {userInfo?.name} !!</h1>
           {/* <button
             onClick={handleLogout}
             className="bg-red-500 text-white px-6 py-2 rounded-full hover:bg-red-600 transition-all duration-300"
