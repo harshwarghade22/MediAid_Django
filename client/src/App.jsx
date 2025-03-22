@@ -27,6 +27,9 @@ const ProtectedRoute = ({ children }) => {
   const { isAuthenticated, loading } = useSelector((state) => state.userLogin);
   const location = useLocation();
 
+
+  
+
   // Show loading or redirect to login
   if (loading) {
     return <div className="flex justify-center items-center h-screen">
@@ -57,10 +60,13 @@ const GuestRoute = ({ children }) => {
 import Blogs from './components/Blogs/Blogs';
 import BlogsDetail from './components/Blogs/BlogsDetail';
 import Resources from './components/Pages/Resources.jsx';
+import ChatBotIcon from './components/ChatBot/ChatBotIcon.jsx';
+import Chat from './components/ChatBot/Chat.jsx';
 
 function App() {
   const dispatch = useDispatch();
   const [verifyingToken, setVerifyingToken] = useState(true);
+  const [isChatOpen, setIsChatOpen] = useState(false);
   
   // Check if user is already logged in (token exists in localStorage)
   useEffect(() => {
@@ -105,6 +111,18 @@ function App() {
       </div>
     );
   }
+
+  // const location = useLocation();
+
+  
+  
+  
+  // Routes where ChatBot should not be displayed
+  const noChatBotRoutes = ['/signin'];
+
+  const toggleChat = () => {
+    setIsChatOpen(!isChatOpen);
+  };
 
   return (
     <Router>
@@ -172,7 +190,13 @@ function App() {
           {/* 404 Page */}
           <Route path="*" element={<NotFound />} />
         </Routes>
-        <Chatbot /> {/* Floating chatbot available everywhere */}
+        {/* <Chatbot /> Floating chatbot available everywhere */}
+
+        <>
+          <ChatBotIcon isOpen={isChatOpen} toggleChat={toggleChat} />
+          <Chat isOpen={isChatOpen} toggleChat={toggleChat} />
+        </>
+    
       </div>
     </Router>
   );
