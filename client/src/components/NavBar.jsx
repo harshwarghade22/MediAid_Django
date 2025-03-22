@@ -121,14 +121,14 @@ const Navbar = () => {
             >
               Blogs
             </NavLink>
-            <NavLink 
+            {/* <NavLink 
               to="/doctors"
               className={({ isActive }) => 
                 isActive ? "text-blue-600 font-medium" : "text-gray-600 hover:text-blue-600"
               }
             >
               Doctors
-            </NavLink>
+            </NavLink> */}
             <NavLink 
               to="/pharmacy"
               className={({ isActive }) => 
@@ -153,7 +153,7 @@ const Navbar = () => {
             >
               Resources
             </NavLink>
-            {isAuthenticated && (
+            
               <>
                 <NavLink 
                   to="/wallet"
@@ -172,7 +172,7 @@ const Navbar = () => {
                   Emergency History
                 </NavLink>
               </>
-            )}
+            
             
             {/* Auth Button */}
             <div className="flex items-center">

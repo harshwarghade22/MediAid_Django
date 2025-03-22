@@ -70,7 +70,7 @@ import os
 import google.generativeai as genai
 
 # Configure Gemini API
-genai.configure(api_key="AIzaSyA0vqq8g_gWfy6GnGtisFosWIDRdUGMoPM")
+genai.configure(api_key="AIzaSyD-smqepITgOaDwRTjBJfek26nIlZtywmU")
 
 class FileProcessView(APIView):
     def post(self, request):

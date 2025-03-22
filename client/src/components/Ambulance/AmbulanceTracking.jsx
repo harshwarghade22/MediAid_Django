@@ -3,6 +3,8 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { FaAmbulance, FaPhoneAlt, FaRoute } from 'react-icons/fa';
+import MarkerClusterGroup from 'react-leaflet-markercluster';
+// import 'react-leaflet-markercluster/dist/styles.min.css';
 
 // Fix Leaflet icon issue
 delete L.Icon.Default.prototype._getIconUrl;
@@ -23,13 +25,13 @@ const ambulanceIcon = new L.Icon({
 // MapController component to handle map interactions
 function MapController({ center }) {
   const map = useMap();
-  
+
   useEffect(() => {
     if (center) {
       map.setView(center, 13);
     }
   }, [center, map]);
-  
+
   return null;
 }
 
@@ -133,10 +135,10 @@ const AmbulanceTracking = () => {
   // Find nearest ambulance
   const findNearestAmbulance = () => {
     if (!userLocation) return null;
-    
+
     let nearestAmbulance = null;
     let shortestDistance = Infinity;
-    
+
     ambulances.forEach(ambulance => {
       const distance = L.latLng(userLocation).distanceTo(L.latLng(ambulance.position));
       if (distance < shortestDistance && ambulance.status === "Available") {
@@ -144,7 +146,7 @@ const AmbulanceTracking = () => {
         nearestAmbulance = ambulance;
       }
     });
-    
+
     return nearestAmbulance;
   };
 
@@ -172,7 +174,7 @@ const AmbulanceTracking = () => {
             </div>
             <p className="text-gray-500">Ready to respond</p>
           </div>
-          
+
           <div className="bg-white rounded-lg shadow-md p-6">
             <h2 className="text-lg font-semibold mb-3">Ambulances On Route</h2>
             <div className="text-3xl font-bold text-yellow-500">
@@ -180,7 +182,7 @@ const AmbulanceTracking = () => {
             </div>
             <p className="text-gray-500">Currently on emergency calls</p>
           </div>
-          
+
           <div className="bg-white rounded-lg shadow-md p-6">
             <h2 className="text-lg font-semibold mb-3">Your Location</h2>
             {userLocation ? (
@@ -209,7 +211,7 @@ const AmbulanceTracking = () => {
                 </h3>
                 <div className="mt-2 text-sm text-blue-700">
                   <p>ETA: {nearestAmbulance.eta}</p>
-                  <button 
+                  <button
                     className="mt-2 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                   >
                     <FaPhoneAlt className="-ml-1 mr-2 h-4 w-4" />
@@ -234,10 +236,10 @@ const AmbulanceTracking = () => {
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
-              
+
               {/* User marker */}
               {userLocation && (
-                <Marker 
+                <Marker
                   position={userLocation}
                   icon={new L.Icon({
                     iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
@@ -249,9 +251,9 @@ const AmbulanceTracking = () => {
                   <Popup>Your Location</Popup>
                 </Marker>
               )}
-              
+
               {/* Ambulance markers (without clustering) */}
-              {ambulances.map(ambulance => (
+              {/* {ambulances.map(ambulance => (
                 <Marker 
                   key={ambulance.id} 
                   position={ambulance.position}
@@ -281,7 +283,21 @@ const AmbulanceTracking = () => {
                     </div>
                   </Popup>
                 </Marker>
-              ))}
+              ))} */}
+              <MarkerClusterGroup>
+                {ambulances.map((ambulance) => (
+                  <Marker key={ambulance.id} position={ambulance.position} icon={ambulanceIcon}>
+                    <Popup>
+                      <div>
+                        <h3>{ambulance.name}</h3>
+                        <p>Status: {ambulance.status}</p>
+                        <p>ETA: {ambulance.eta}</p>
+                        <p>Phone: {ambulance.phone}</p>
+                      </div>
+                    </Popup>
+                  </Marker>
+                ))}
+              </MarkerClusterGroup>
             </MapContainer>
           </div>
         </div>
