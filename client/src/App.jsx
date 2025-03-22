@@ -20,6 +20,7 @@ import NotFound from './components/Pages/NotFound.jsx';
 import Profile from './components/User/Profile.jsx';
 // import { LOGIN_SUCCESS, LOGIN_FAIL } from './constants/projectConstant';
 import axios from 'axios';
+import EmergencyHistory from './components/Emergency/EmergencyHistory';
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
@@ -159,6 +160,14 @@ function App() {
               <WalletPage />
             </ProtectedRoute>
           } />
+          <Route
+            path="/emergency-history"
+            element={
+              <ProtectedRoute>
+                <EmergencyHistory />
+              </ProtectedRoute>
+            }
+          />
           
           {/* 404 Page */}
           <Route path="*" element={<NotFound />} />

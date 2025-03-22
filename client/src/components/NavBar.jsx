@@ -154,14 +154,24 @@ const Navbar = () => {
               Resources
             </NavLink>
             {isAuthenticated && (
-              <NavLink 
-                to="/wallet"
-                className={({ isActive }) => 
-                  isActive ? "text-blue-600 font-medium" : "text-gray-600 hover:text-blue-600"
-                }
-              >
-                Wallet
-              </NavLink>
+              <>
+                <NavLink 
+                  to="/wallet"
+                  className={({ isActive }) => 
+                    isActive ? "text-blue-600 font-medium" : "text-gray-600 hover:text-blue-600"
+                  }
+                >
+                  Wallet
+                </NavLink>
+                <NavLink 
+                  to="/emergency-history"
+                  className={({ isActive }) => 
+                    isActive ? "text-blue-600 font-medium" : "text-gray-600 hover:text-blue-600"
+                  }
+                >
+                  Emergency History
+                </NavLink>
+              </>
             )}
             
             {/* Auth Button */}
@@ -225,13 +235,22 @@ const Navbar = () => {
             </Link>
             
             {isAuthenticated && (
-              <Link 
-                to="/wallet" 
-                onClick={() => setIsOpen(false)}
-                className="block px-3 py-2 text-gray-600 hover:bg-blue-50 rounded-md"
-              >
-                Wallet
-              </Link>
+              <>
+                <Link 
+                  to="/wallet" 
+                  onClick={() => setIsOpen(false)}
+                  className="block px-3 py-2 text-gray-600 hover:bg-blue-50 rounded-md"
+                >
+                  Wallet
+                </Link>
+                <Link 
+                  to="/emergency-history" 
+                  onClick={() => setIsOpen(false)}
+                  className="block px-3 py-2 text-gray-600 hover:bg-blue-50 rounded-md"
+                >
+                  Emergency History
+                </Link>
+              </>
             )}
             
             {/* Mobile Auth Buttons */}

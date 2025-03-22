@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { createEmergency } from '../../actions/emergencyActions';
 import { 
   FaAmbulance, 
   FaHeartbeat, 
@@ -11,6 +13,7 @@ import {
 } from 'react-icons/fa';
 
 const EmergencyModal = ({ onClose }) => {
+  const dispatch = useDispatch();
   const [step, setStep] = useState(1);
   const [selectedType, setSelectedType] = useState(null);
   const [location, setLocation] = useState(null);
@@ -68,17 +71,17 @@ const EmergencyModal = ({ onClose }) => {
 
   const handleSubmit = async () => {
     try {
-      // Prepare emergency request data
-      const emergencyRequest = {
-        type: selectedType.id,
-        location: location,
-        description: formData.description,
-        contactNumber: formData.contactNumber
-      };
+      // Format location string
+      const locationString = location 
+        ? `${location.latitude}, ${location.longitude}`
+        : 'Location not available';
 
-      // TODO: Implement actual API call to submit emergency request
-      console.log('Emergency Request:', emergencyRequest);
-      
+      // Create emergency request
+      await dispatch(createEmergency(
+        locationString,
+        `${selectedType.name}: ${formData.description}`
+      ));
+
       // Show confirmation and close modal
       alert('Emergency request submitted. Help is on the way!');
       onClose();
