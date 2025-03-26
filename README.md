@@ -60,3 +60,6 @@ Contributions are welcome! Fork the repository and submit a pull request.
 
 ## 📧 Contact
 For queries or support, contact: **harsh.warghade22@spit.ac.in**
+
+## Video Link of Protoype:
+https://drive.google.com/file/d/1QzXH3AtVPhff1h-FifcOK-NHUrKvdNv0/view?usp=drive_link
