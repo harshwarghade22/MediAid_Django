@@ -68,9 +68,11 @@ import PyPDF2
 import docx
 import os
 import google.generativeai as genai
+from decouple import config
+
 
 # Configure Gemini API
-genai.configure(api_key="AIzaSyD-smqepITgOaDwRTjBJfek26nIlZtywmU")
+genai.configure(api_key=config('GEMINI_API_KEY'))
 
 class FileProcessView(APIView):
     def post(self, request):

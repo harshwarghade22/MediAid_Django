@@ -4,7 +4,7 @@ import { FiPaperclip, FiMic, FiSend, FiX } from 'react-icons/fi';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import axios from 'axios';
 
-const genAI = new GoogleGenerativeAI("AIzaSyApZd8uGx6WJ0EGHEf9xelRoMaSojFrycg");
+const genAI = new GoogleGenerativeAI('REACT_APP_GEMINI_API_KEY');
 
 // Utility functions
 const cleanResponse = (text) => {
