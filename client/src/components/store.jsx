@@ -6,6 +6,7 @@ import { signupProjectReducers ,  loginProjectReducers, userDetailReducers } fro
 import { doctorListReducer, doctorDetailsReducer } from "../reducers/doctorReducer";
 import { emergencyListReducer } from "../reducers/emergencyReducer";
 
+
 const rootReducer = combineReducers({
   userSignup: signupProjectReducers,
   userLogin:loginProjectReducers,
