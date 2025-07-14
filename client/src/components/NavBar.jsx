@@ -193,11 +193,11 @@ const Navbar = () => {
 
         {/* Mobile Menu */}
         <div
-          className={`md:hidden absolute left-0 right-0 bg-white/90 backdrop-blur-md shadow-lg transition-all duration-300 ${
-            isOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
-          }`}
+          className={`md:hidden fixed top-20 left-0 right-0 bg-white/95 backdrop-blur-md shadow-lg transition-all duration-300 ease-in-out z-50 ${
+            isOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-2'
+          } border-t border-gray-200`}
         >
-          <div className="px-4 pt-2 pb-3 space-y-1">
+          <div className="px-4 pt-2 pb-3 space-y-1 max-h-[calc(100vh-5rem)] overflow-y-auto">
             <Link 
               to="/" 
               onClick={() => setIsOpen(false)}
